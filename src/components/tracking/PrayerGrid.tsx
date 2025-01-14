@@ -11,7 +11,7 @@ interface DayProps {
   isCurrentDay: boolean;
 }
 
-const Day = ({ date, prayers, onTogglePrayer, isCurrentDay }: DayProps) => (
+const Day = ({ date, prayers: prayerStates, onTogglePrayer, isCurrentDay }: DayProps) => (
   <div className={`bg-white/50 backdrop-blur-sm p-4 border border-primary/20 rounded-xl shadow-sm transition-all duration-300 animate-fadeIn ${
     isCurrentDay ? 'ring-2 ring-primary' : 'hover:shadow-md'
   }`}>
@@ -20,18 +20,18 @@ const Day = ({ date, prayers, onTogglePrayer, isCurrentDay }: DayProps) => (
       {isCurrentDay && <span className="ml-2 text-xs text-accent">(Today)</span>}
     </div>
     <div className="space-y-2">
-      {prayers.map((done, index) => (
+      {prayers.map((prayerName, index) => (
         <button
           key={index}
           onClick={() => onTogglePrayer(index)}
           disabled={!isCurrentDay}
           className={`w-full py-2 px-3 rounded-lg transition-all duration-300 ${
-            done
+            prayerStates[index]
               ? "bg-primary/20 text-primary font-medium shadow-inner transform hover:scale-[0.98]"
               : "bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground"
           } ${!isCurrentDay && "opacity-60 cursor-not-allowed"}`}
         >
-          {prayers[index]}
+          {prayerName}
         </button>
       ))}
     </div>
