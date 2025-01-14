@@ -2,27 +2,34 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 
-const prayers = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
+const prayers = ["Fajr", "Zuhr", "Asr", "Maghrib", "Isha"];
 
 interface DayProps {
   date: number;
   prayers: boolean[];
   onTogglePrayer: (prayerIndex: number) => void;
+  isCurrentDay: boolean;
 }
 
-const Day = ({ date, prayers, onTogglePrayer }: DayProps) => (
-  <div className="bg-white/50 backdrop-blur-sm p-4 border border-primary/20 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 animate-fadeIn">
-    <div className="text-base font-semibold mb-3 text-primary">{date}</div>
+const Day = ({ date, prayers, onTogglePrayer, isCurrentDay }: DayProps) => (
+  <div className={`bg-white/50 backdrop-blur-sm p-4 border border-primary/20 rounded-xl shadow-sm transition-all duration-300 animate-fadeIn ${
+    isCurrentDay ? 'ring-2 ring-primary' : 'hover:shadow-md'
+  }`}>
+    <div className="text-base font-semibold mb-3 text-primary">
+      {date}
+      {isCurrentDay && <span className="ml-2 text-xs text-accent">(Today)</span>}
+    </div>
     <div className="space-y-2">
       {prayers.map((done, index) => (
         <button
           key={index}
           onClick={() => onTogglePrayer(index)}
+          disabled={!isCurrentDay}
           className={`w-full py-2 px-3 rounded-lg transition-all duration-300 ${
             done
               ? "bg-primary/20 text-primary font-medium shadow-inner transform hover:scale-[0.98]"
               : "bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground"
-          }`}
+          } ${!isCurrentDay && "opacity-60 cursor-not-allowed"}`}
         >
           {prayers[index]}
         </button>
@@ -39,7 +46,13 @@ export const PrayerGrid = () => {
       .map(() => Array(5).fill(false))
   );
 
+  // Get current day of the month
+  const currentDay = new Date().getDate();
+
   const handleTogglePrayer = (dayIndex: number, prayerIndex: number) => {
+    // Only allow toggling prayers for the current day
+    if (dayIndex + 1 !== currentDay) return;
+
     const newDaysData = [...daysData];
     newDaysData[dayIndex][prayerIndex] = !newDaysData[dayIndex][prayerIndex];
     setDaysData(newDaysData);
@@ -71,6 +84,7 @@ export const PrayerGrid = () => {
             date={dayIndex + 1}
             prayers={prayers}
             onTogglePrayer={(prayerIndex) => handleTogglePrayer(dayIndex, prayerIndex)}
+            isCurrentDay={dayIndex + 1 === currentDay}
           />
         ))}
       </div>
