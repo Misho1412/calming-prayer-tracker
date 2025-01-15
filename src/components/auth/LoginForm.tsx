@@ -21,7 +21,7 @@ export const LoginForm = () => {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary"
+          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary dark:bg-slate-800 dark:border-slate-700 dark:text-white"
         />
       </div>
       <div className="space-y-2">
@@ -30,17 +30,17 @@ export const LoginForm = () => {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary"
+          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary dark:bg-slate-800 dark:border-slate-700 dark:text-white"
         />
       </div>
       <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white">
         Login
       </Button>
       <div className="flex justify-between text-sm">
-        <a href="#" className="text-accent hover:text-accent/80 transition-colors">
+        <a href="#" className="text-accent hover:text-accent/80 transition-colors dark:text-accent-foreground">
           Sign Up
         </a>
-        <a href="#" className="text-accent hover:text-accent/80 transition-colors">
+        <a href="#" className="text-accent hover:text-accent/80 transition-colors dark:text-accent-foreground">
           Forgot Password?
         </a>
       </div>
