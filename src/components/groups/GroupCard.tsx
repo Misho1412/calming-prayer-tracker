@@ -1,4 +1,5 @@
 import { Progress } from "@/components/ui/progress";
+import { useNavigate } from "react-router-dom";
 
 interface Member {
   id: string;
@@ -8,11 +9,14 @@ interface Member {
 }
 
 interface GroupCardProps {
+  groupId?: string;
   members: Member[];
   onAddMember: () => void;
 }
 
-export const GroupCard = ({ members, onAddMember }: GroupCardProps) => {
+export const GroupCard = ({ groupId = "1", members, onAddMember }: GroupCardProps) => {
+  const navigate = useNavigate();
+
   return (
     <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl shadow-sm p-6 animate-fadeIn border border-primary/10 dark:border-slate-700/50">
       <div className="space-y-4">
@@ -32,12 +36,20 @@ export const GroupCard = ({ members, onAddMember }: GroupCardProps) => {
             </div>
           ))}
         </div>
-        <button
-          onClick={onAddMember}
-          className="w-full mt-4 px-4 py-2 text-sm text-accent dark:text-accent-foreground border border-accent dark:border-accent-foreground rounded-lg hover:bg-accent hover:text-white dark:hover:bg-accent-foreground dark:hover:text-accent transition-colors"
-        >
-          Add Member
-        </button>
+        <div className="space-y-2">
+          <button
+            onClick={() => navigate(`/groups/${groupId}`)}
+            className="w-full px-4 py-2 text-sm bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+          >
+            View Details
+          </button>
+          <button
+            onClick={onAddMember}
+            className="w-full px-4 py-2 text-sm text-accent dark:text-accent-foreground border border-accent dark:border-accent-foreground rounded-lg hover:bg-accent hover:text-white dark:hover:bg-accent-foreground dark:hover:text-accent transition-colors"
+          >
+            Add Member
+          </button>
+        </div>
       </div>
     </div>
   );

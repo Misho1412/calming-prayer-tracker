@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Groups from "./pages/Groups";
 import Tracking from "./pages/Tracking";
+import GroupDetails from "./pages/GroupDetails";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ const App = () => (
           <Route path="/" element={<Login />} />
           <Route path="/groups" element={<Groups />} />
           <Route path="/tracking" element={<Tracking />} />
+          <Route path="/groups/:groupId" element={<GroupDetails />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
