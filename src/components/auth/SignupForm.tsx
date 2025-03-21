@@ -6,9 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
-export const LoginForm = () => {
+export const SignupForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -19,24 +20,34 @@ export const LoginForm = () => {
       toast.error("Please enter both username and password");
       return;
     }
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
     
     try {
       setLoading(true);
-      // Sign in using Supabase with username as email
-      const { error } = await supabase.auth.signInWithPassword({
-        email: `${username}@example.com`,
+      // Use Supabase to sign up with username as email
+      const { error } = await supabase.auth.signUp({
+        email: `${username}@example.com`, // Using username as part of email since Supabase requires email format
         password: password,
+        options: {
+          data: {
+            username: username,
+          }
+        }
       });
 
       if (error) {
         toast.error(error.message);
         return;
       }
-
-      toast.success(`Welcome back, ${username}!`);
+      
+      toast.success("Account created successfully!");
       navigate("/groups");
     } catch (error) {
-      toast.error("Login failed");
+      toast.error("Failed to create account");
       console.error(error);
     } finally {
       setLoading(false);
@@ -65,25 +76,30 @@ export const LoginForm = () => {
           required
         />
       </div>
+      <div className="space-y-2">
+        <Input
+          type="password"
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+          required
+        />
+      </div>
       <Button 
         type="submit" 
         className="w-full bg-primary hover:bg-primary/90 text-white"
         disabled={loading}
       >
-        {loading ? "Logging in..." : "Login"}
+        {loading ? "Creating Account..." : "Sign Up"}
       </Button>
-      <div className="flex justify-between text-sm">
+      <div className="text-sm text-center">
+        <span className="text-gray-600 dark:text-gray-400">Already have an account? </span>
         <a 
-          href="/signup" 
+          href="/" 
           className="text-accent hover:text-accent/80 transition-colors dark:text-accent-foreground"
         >
-          Sign Up
-        </a>
-        <a 
-          href="#" 
-          className="text-accent hover:text-accent/80 transition-colors dark:text-accent-foreground"
-        >
-          Forgot Password?
+          Login
         </a>
       </div>
     </form>
