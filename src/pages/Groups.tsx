@@ -1,8 +1,14 @@
+
+import { useState } from "react";
 import { GroupCard } from "@/components/groups/GroupCard";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 
-const mockMembers = [
+// Initial mock data
+const initialMembers = [
   {
     id: "1",
     name: "Ahmed Hassan",
@@ -25,6 +31,51 @@ const mockMembers = [
 
 const Groups = () => {
   const navigate = useNavigate();
+  const [groups, setGroups] = useState([{ id: "1", name: "Morning Prayer Warriors", members: [...initialMembers] }]);
+  const [isCreateGroupOpen, setIsCreateGroupOpen] = useState(false);
+  const [newGroupName, setNewGroupName] = useState("");
+
+  const handleCreateGroup = () => {
+    if (!newGroupName.trim()) {
+      toast.error("Please enter a group name");
+      return;
+    }
+
+    const newGroup = {
+      id: `g-${Date.now()}`,
+      name: newGroupName,
+      members: []
+    };
+
+    setGroups([...groups, newGroup]);
+    setNewGroupName("");
+    setIsCreateGroupOpen(false);
+    toast.success(`New group "${newGroupName}" created!`);
+  };
+
+  const handleAddMember = (groupId: string) => {
+    // Find the group to add member to
+    const groupIndex = groups.findIndex(g => g.id === groupId);
+    
+    if (groupIndex === -1) return;
+    
+    // Create a random member for demo purposes
+    const names = ["Fatima", "Omar", "Layla", "Ibrahim", "Noor"];
+    const randomName = names[Math.floor(Math.random() * names.length)];
+    const newMember = {
+      id: `m-${Date.now()}`,
+      name: randomName,
+      avatar: `https://i.pravatar.cc/150?u=${Date.now()}`,
+      progress: Math.floor(Math.random() * 100)
+    };
+    
+    // Add member to the group
+    const updatedGroups = [...groups];
+    updatedGroups[groupIndex].members.push(newMember);
+    setGroups(updatedGroups);
+    
+    toast.success(`${randomName} added to ${groups[groupIndex].name}`);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-slate-900 transition-colors duration-300">
@@ -54,11 +105,23 @@ const Groups = () => {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <Button className="bg-primary hover:bg-primary/90 text-white">Create New Group</Button>
+          <Button 
+            onClick={() => setIsCreateGroupOpen(true)}
+            className="bg-primary hover:bg-primary/90 text-white"
+          >
+            Create New Group
+          </Button>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <GroupCard members={mockMembers} onAddMember={() => {}} />
+          {groups.map(group => (
+            <GroupCard 
+              key={group.id}
+              groupId={group.id} 
+              members={group.members} 
+              onAddMember={() => handleAddMember(group.id)} 
+            />
+          ))}
         </div>
 
         <div className="mt-8 text-center">
@@ -70,6 +133,34 @@ const Groups = () => {
           </Button>
         </div>
       </main>
+
+      {/* Create Group Dialog */}
+      <Dialog open={isCreateGroupOpen} onOpenChange={setIsCreateGroupOpen}>
+        <DialogContent className="sm:max-w-[425px] bg-white dark:bg-slate-800 text-gray-900 dark:text-white">
+          <DialogHeader>
+            <DialogTitle>Create New Prayer Group</DialogTitle>
+            <DialogDescription className="text-gray-600 dark:text-gray-400">
+              Enter a name for your new prayer group.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            <Input
+              className="dark:bg-slate-700 dark:border-slate-600"
+              placeholder="Group Name"
+              value={newGroupName}
+              onChange={(e) => setNewGroupName(e.target.value)}
+            />
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsCreateGroupOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleCreateGroup}>
+              Create Group
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

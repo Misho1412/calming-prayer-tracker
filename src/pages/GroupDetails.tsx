@@ -1,51 +1,95 @@
+
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card } from "@/components/ui/card";
 import { Trophy } from "lucide-react";
+import { useEffect, useState } from "react";
+
+interface Prayer {
+  fajr: number;
+  dhuhr: number;
+  asr: number;
+  maghrib: number;
+  isha: number;
+}
+
+interface Member {
+  id: string;
+  name: string;
+  avatar: string;
+  monthlyProgress: number;
+  achievements: string[];
+  prayers: Prayer;
+}
+
+interface Group {
+  id: string;
+  name: string;
+  members: Member[];
+}
 
 // Mock data - in a real app this would come from your backend
-const mockGroupData = {
-  id: "1",
-  name: "Morning Prayer Warriors",
-  members: [
-    {
-      id: "1",
-      name: "Ahmed Hassan",
-      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop",
-      monthlyProgress: 85,
-      achievements: ["Early Bird", "30 Days Streak", "Group Leader"],
-      prayers: {
-        fajr: 90,
-        dhuhr: 85,
-        asr: 80,
-        maghrib: 95,
-        isha: 75
+const mockGroupsData: Group[] = [
+  {
+    id: "1",
+    name: "Morning Prayer Warriors",
+    members: [
+      {
+        id: "1",
+        name: "Ahmed Hassan",
+        avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop",
+        monthlyProgress: 85,
+        achievements: ["Early Bird", "30 Days Streak", "Group Leader"],
+        prayers: {
+          fajr: 90,
+          dhuhr: 85,
+          asr: 80,
+          maghrib: 95,
+          isha: 75
+        }
+      },
+      {
+        id: "2",
+        name: "Sara Ahmed",
+        avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
+        monthlyProgress: 92,
+        achievements: ["Perfect Week", "Community Helper"],
+        prayers: {
+          fajr: 95,
+          dhuhr: 90,
+          asr: 92,
+          maghrib: 93,
+          isha: 90
+        }
       }
-    },
-    {
-      id: "2",
-      name: "Sara Ahmed",
-      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
-      monthlyProgress: 92,
-      achievements: ["Perfect Week", "Community Helper"],
-      prayers: {
-        fajr: 95,
-        dhuhr: 90,
-        asr: 92,
-        maghrib: 93,
-        isha: 90
-      }
-    }
-  ]
-};
+    ]
+  }
+];
 
 const GroupDetails = () => {
   const navigate = useNavigate();
   const { groupId } = useParams();
+  const [group, setGroup] = useState<Group | null>(null);
 
-  // In a real app, fetch group data based on groupId
-  const group = mockGroupData;
+  useEffect(() => {
+    // In a real app, this would be an API call
+    const foundGroup = mockGroupsData.find(g => g.id === groupId);
+    setGroup(foundGroup || null);
+  }, [groupId]);
+
+  if (!group) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-900">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Group not found</h2>
+          <Button onClick={() => navigate("/groups")}>
+            Back to Groups
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-slate-900 transition-colors duration-300">
