@@ -9,7 +9,51 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      prayers: {
+        Row: {
+          asr: boolean | null
+          created_at: string | null
+          day: number
+          fajr: boolean | null
+          id: string
+          isha: boolean | null
+          maghrib: boolean | null
+          month: number
+          updated_at: string | null
+          user_id: string
+          year: number
+          zuhr: boolean | null
+        }
+        Insert: {
+          asr?: boolean | null
+          created_at?: string | null
+          day: number
+          fajr?: boolean | null
+          id?: string
+          isha?: boolean | null
+          maghrib?: boolean | null
+          month: number
+          updated_at?: string | null
+          user_id: string
+          year: number
+          zuhr?: boolean | null
+        }
+        Update: {
+          asr?: boolean | null
+          created_at?: string | null
+          day?: number
+          fajr?: boolean | null
+          id?: string
+          isha?: boolean | null
+          maghrib?: boolean | null
+          month?: number
+          updated_at?: string | null
+          user_id?: string
+          year?: number
+          zuhr?: boolean | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

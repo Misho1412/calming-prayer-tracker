@@ -1,3 +1,4 @@
+
 import { PrayerGrid } from "@/components/tracking/PrayerGrid";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";

@@ -18,6 +18,21 @@ const egyptPrayerTimes = {
 
 const prayers = ["Fajr", "Zuhr", "Asr", "Maghrib", "Isha"];
 
+interface PrayerRecord {
+  id: string;
+  user_id: string;
+  day: number;
+  month: number;
+  year: number;
+  fajr: boolean;
+  zuhr: boolean;
+  asr: boolean;
+  maghrib: boolean;
+  isha: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 interface DayProps {
   date: number;
   prayers: boolean[];
@@ -93,7 +108,7 @@ export const PrayerGrid = () => {
             // Transform data to our state format
             const newDaysData = [...daysData];
             
-            data.forEach(prayer => {
+            data.forEach((prayer: PrayerRecord) => {
               if (prayer.day >= 1 && prayer.day <= 31) {
                 newDaysData[prayer.day - 1] = [
                   prayer.fajr || false,
