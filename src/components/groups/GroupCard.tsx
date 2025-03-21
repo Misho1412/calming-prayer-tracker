@@ -1,6 +1,7 @@
 
 import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
+import { Share2 } from "lucide-react";
 
 interface Member {
   id: string;
@@ -40,7 +41,7 @@ export const GroupCard = ({ groupId = "1", members, onAddMember }: GroupCardProp
           </div>
         ) : (
           <div className="text-center py-4 text-gray-500 dark:text-gray-400">
-            No members yet. Add your first member!
+            No members yet. Invite your first member!
           </div>
         )}
         <div className="space-y-2">
@@ -52,9 +53,10 @@ export const GroupCard = ({ groupId = "1", members, onAddMember }: GroupCardProp
           </button>
           <button
             onClick={onAddMember}
-            className="w-full px-4 py-2 text-sm text-accent dark:text-accent-foreground border border-accent dark:border-accent-foreground rounded-lg hover:bg-accent hover:text-white dark:hover:bg-accent-foreground dark:hover:text-accent transition-colors"
+            className="w-full px-4 py-2 text-sm flex items-center justify-center gap-2 text-accent dark:text-accent-foreground border border-accent dark:border-accent-foreground rounded-lg hover:bg-accent hover:text-white dark:hover:bg-accent-foreground dark:hover:text-accent transition-colors"
           >
-            Add Member
+            <Share2 className="h-4 w-4" />
+            Invite Members
           </button>
         </div>
       </div>

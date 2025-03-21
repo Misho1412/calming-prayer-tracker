@@ -9,6 +9,7 @@ import Signup from "./pages/Signup";
 import Groups from "./pages/Groups";
 import Tracking from "./pages/Tracking";
 import GroupDetails from "./pages/GroupDetails";
+import GroupInvite from "./pages/GroupInvite";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/groups" element={<Groups />} />
           <Route path="/tracking" element={<Tracking />} />
           <Route path="/groups/:groupId" element={<GroupDetails />} />
+          <Route path="/invite/:code" element={<GroupInvite />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

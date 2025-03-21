@@ -192,7 +192,7 @@ export const PrayerGrid = () => {
         .eq('day', day)
         .eq('month', currentMonth)
         .eq('year', currentYear)
-        .single();
+        .maybeSingle();
       
       if (fetchError && fetchError.code !== 'PGRST116') {
         throw fetchError;
