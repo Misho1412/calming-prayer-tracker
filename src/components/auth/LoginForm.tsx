@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
 export const LoginForm = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -15,16 +15,16 @@ export const LoginForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!username || !password) {
-      toast.error("Please enter both username and password");
+    if (!email || !password) {
+      toast.error("Please enter both email and password");
       return;
     }
     
     try {
       setLoading(true);
-      // Sign in using Supabase with username as email
+      // Sign in using Supabase with email
       const { error } = await supabase.auth.signInWithPassword({
-        email: `${username}@example.com`,
+        email: email,
         password: password,
       });
 
@@ -33,7 +33,7 @@ export const LoginForm = () => {
         return;
       }
 
-      toast.success(`Welcome back, ${username}!`);
+      toast.success(`Welcome back!`);
       navigate("/groups");
     } catch (error) {
       toast.error("Login failed");
@@ -47,10 +47,10 @@ export const LoginForm = () => {
     <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-sm animate-fadeIn">
       <div className="space-y-2">
         <Input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary dark:bg-slate-800 dark:border-slate-700 dark:text-white"
           required
         />
